@@ -212,21 +212,122 @@ body .options .option .label .info .sub {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-out;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    animation: slideIn 0.3s ease-out;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-100vh); }
+    to { transform: translateY(0); }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.options {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-option {
+  width: 100%; /* Make it full width */
+  height: 40vh; /* Adjust height as needed */
+  position: relative;
+  background-color: white; /* Background color for visibility */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .close-button {
   position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #ff4d4d;
+  top: 10px;
+  right: 10px;
+  padding: 10px;
+  background-color: red;
   color: white;
   border: none;
-  font-size: 20px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .close-button:hover {
-  background-color: #ff1a1a;
+  background-color: darkred;
 }
+
+/* Ensure options are styled properly */
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  margin-bottom: 10px; /* Space between options */
+}
+
