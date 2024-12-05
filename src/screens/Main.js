@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../App.css';
 
-const API_URL = 'http://127.0.0.1:5000/api/detect_drowsiness';
-const EAR_THRESHOLD = 0.1;  // Adjust this value as needed
+const API_URL = 'http://192.168.1.77:5000/api/detect_drowsiness';
+const EAR_THRESHOLD = 0.15;  // Adjust this value as needed
 
 function Main() {
   const videoRef = useRef(null);
