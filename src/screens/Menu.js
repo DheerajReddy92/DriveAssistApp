@@ -3,7 +3,7 @@ import '../App.css';
 import d1 from '../images/d1.gif'; 
 import d2 from '../images/d2.gif'; 
 import Main from '../screens/Main.js';
-import TrafficSign from '../screens/TrafficSign.js'; // Import the TrafficSign component
+import TrafficSign from '../screens/TrafficSign.js'; 
 
 function Menu() {
     const [activeIndex, setActiveIndex] = useState(0);
