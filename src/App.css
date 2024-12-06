@@ -341,3 +341,7 @@ body .options .option .label .info .sub {
 .traffic-sign-container {
   margin-top:11vh;
 }
+
+.traffic-live-sign {
+  margin-top:-8vh;
+}
