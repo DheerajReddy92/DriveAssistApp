@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/DriveAssistApp/static/css/main.140ddc73.css",
-    "main.js": "/DriveAssistApp/static/js/main.5efcb601.js",
+    "main.js": "/DriveAssistApp/static/js/main.aaee55f4.js",
     "static/js/845.be8cd4e8.chunk.js": "/DriveAssistApp/static/js/845.be8cd4e8.chunk.js",
     "static/media/d1.gif": "/DriveAssistApp/static/media/d1.8c355c46f829720b96b6.gif",
     "static/media/d2.gif": "/DriveAssistApp/static/media/d2.0d32266b0745fb130b8d.gif",
     "static/media/tf2.jpg": "/DriveAssistApp/static/media/tf2.97a6b6be8863a3689b7e.jpg",
     "index.html": "/DriveAssistApp/index.html",
     "main.140ddc73.css.map": "/DriveAssistApp/static/css/main.140ddc73.css.map",
-    "main.5efcb601.js.map": "/DriveAssistApp/static/js/main.5efcb601.js.map",
+    "main.aaee55f4.js.map": "/DriveAssistApp/static/js/main.aaee55f4.js.map",
     "845.be8cd4e8.chunk.js.map": "/DriveAssistApp/static/js/845.be8cd4e8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.140ddc73.css",
-    "static/js/main.5efcb601.js"
+    "static/js/main.aaee55f4.js"
   ]
 }
