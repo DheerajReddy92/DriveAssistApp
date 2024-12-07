@@ -5,13 +5,11 @@ import d2 from '../images/d2.gif';
 import d3 from '../images/tf2.jpg'; 
 import Main from '../screens/Main.js';
 import TrafficSign from '../screens/TrafficSign.js'; 
-import TrafficLiveSign from '../screens/TrafficLiveSign.js'; // Add this import
 
 function Menu() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [showMain, setShowMain] = useState(false);
     const [showTrafficSign, setShowTrafficSign] = useState(false);
-    const [showTrafficLiveSign, setShowTrafficLiveSign] = useState(false); // Add this state
 
     const handleOptionClick = (index) => {
         if (index === 0) {
@@ -21,7 +19,6 @@ function Menu() {
                 setActiveIndex(0);
                 setShowMain(false);
                 setShowTrafficSign(false);
-                setShowTrafficLiveSign(false); // Add this
             }
         } else if (index === 1) {
             if (activeIndex === 1) {
@@ -30,16 +27,6 @@ function Menu() {
                 setActiveIndex(1);
                 setShowMain(false);
                 setShowTrafficSign(false);
-                setShowTrafficLiveSign(false); // Add this
-            }
-        } else if (index === 2) { // Add this block for TrafficLiveSign
-            if (activeIndex === 2) {
-                setShowTrafficLiveSign(true);
-            } else {
-                setActiveIndex(2);
-                setShowMain(false);
-                setShowTrafficSign(false);
-                setShowTrafficLiveSign(false);
             }
         } else {
             if (activeIndex === index) {
@@ -48,7 +35,6 @@ function Menu() {
                 setActiveIndex(index);
                 setShowMain(false);
                 setShowTrafficSign(false);
-                setShowTrafficLiveSign(false); // Add this
             }
         }
     };
@@ -63,13 +49,9 @@ function Menu() {
         setActiveIndex(1);
     };
 
-    const handleCloseTrafficLiveSign = () => { // Add this function
-        setShowTrafficLiveSign(false);
-        setActiveIndex(2);
-    };
-
     return (
         <div className="options">
+            {/* First Option: Drowsiness or Main Component */}
             {showMain ? (
                 <div className="main-option">
                     <Main onClose={handleCloseMain} />
@@ -80,11 +62,6 @@ function Menu() {
                     <TrafficSign onClose={handleCloseTrafficSign} />
                     <button className="close-button" onClick={handleCloseTrafficSign}>Close</button>
                 </div>
-            ) : showTrafficLiveSign ? ( // Add this block
-                <div className="main-option">
-                    <TrafficLiveSign onClose={handleCloseTrafficLiveSign} />
-                    <button className="close-button" onClick={handleCloseTrafficLiveSign}>Close</button>
-                </div>
             ) : (
                 <>
                     {/* Drowsiness Option */}
@@ -93,7 +70,16 @@ function Menu() {
                         style={{ backgroundImage: `url(${d1})` }}
                         onClick={() => handleOptionClick(0)}
                     >
-                        {/* ... (content remains the same) ... */}
+                        <div className="shadow"></div>
+                        <div className="label">
+                            <div className="icon">
+                                <i className="fas fa-walking"></i>
+                            </div>
+                            <div className="info">
+                                <div className="main">Drowsiness</div>
+                                <div className="sub">Alert Driver when drowsy</div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Traffic Signs Option */}
@@ -102,10 +88,19 @@ function Menu() {
                         style={{ backgroundImage: `url(${d2})` }}
                         onClick={() => handleOptionClick(1)}
                     >
-                        {/* ... (content remains the same) ... */}
+                        <div className="shadow"></div>
+                        <div className="label">
+                            <div className="icon">
+                                <i className="fas fa-snowflake"></i>
+                            </div>
+                            <div className="info">
+                                <div className="main">Traffic Signs</div>
+                                <div className="sub">Find Traffic signs on Picture</div>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Live Traffic Signs Option */}
+                    {/* Third Option */}
                     <div
                         className={`option ${activeIndex === 2 ? 'active' : ''}`}
                         style={{ backgroundImage: `url(${d3})` }}
@@ -114,7 +109,7 @@ function Menu() {
                          <div className="shadow"></div>
                         <div className="label">
                             <div className="icon">
-                                <i className="fas fa-video"></i>
+                                <i className="fas fa-snowflake"></i>
                             </div>
                             <div className="info">
                                 <div className="main">Live Traffic Signs</div>
