@@ -43,6 +43,7 @@ body .options {
   max-width: 70vh;
   width: calc(100% - 20vw);
   height: 57vh;
+  margin-left: 7vh;
 }
 
 body .options::-webkit-scrollbar {
