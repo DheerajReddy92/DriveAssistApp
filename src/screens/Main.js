@@ -9,7 +9,7 @@ function Main() {
   const [isDrowsy, setIsDrowsy] = useState(false);
   const [face, setface] = useState(true);
   const [ear, setEar] = useState(null);
-  const audioRef = useRef(new Audio('/path/to/your/alarm-sound.mp3'));
+  const audioRef = useRef(new Audio('../../public/alarm.wav'));
   const streamRef = useRef(null);
 
   useEffect(() => {
