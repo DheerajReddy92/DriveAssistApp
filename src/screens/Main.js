@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../App.css';
 
-const API_URL = 'http://192.168.1.77:5000/api/detect_drowsiness';
-const EAR_THRESHOLD = 0.15;  // Adjust this value as needed
+const API_URL = 'http://127.0.0.1:5000/detect-drowsiness'; // Ensure this points to the correct endpoint
+const EAR_THRESHOLD = 0.60;  // Adjust this value as needed
 
 function Main() {
   const videoRef = useRef(null);
   const [isDrowsy, setIsDrowsy] = useState(false);
-  const [face, setface] = useState(true);
-  const [ear, setEar] = useState(null);
+  const [faceDetected, setFaceDetected] = useState(true);
+  const [drowsinessScore, setDrowsinessScore] = useState(null);
   const audioRef = useRef(new Audio(process.env.PUBLIC_URL + '/alarm.wav'));
   const streamRef = useRef(null);
 
@@ -79,16 +79,32 @@ function Main() {
       const frameData = canvas.toDataURL('image/jpeg');
 
       try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(API_URL, { // Use correct API URL
           method: 'POST',
-          body: JSON.stringify({ frame: frameData }),
+          body: JSON.stringify({ image: frameData }), // Send as 'image'
           headers: { 'Content-Type': 'application/json' },
         });
 
+        if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
+
         const result = await response.json();
-        setEar(result.ear);
-        setIsDrowsy(result.ear < EAR_THRESHOLD);
-        setface(result.ear != "")
+
+        // Check for errors in the response
+        if (result.error) {
+          console.error(result.error);
+          return;
+        }
+
+        // Assuming the API returns {"Drowsiness Score": score}
+        const scoreValue =
+          result["Drowsiness Score"] === "N/A" ? null : result["Drowsiness Score"];
+        
+        setDrowsinessScore(scoreValue); // Get the drowsiness score
+        
+        // Check against threshold only if scoreValue is a number
+        setIsDrowsy(typeof scoreValue === "number" && scoreValue < EAR_THRESHOLD); 
+        setFaceDetected(result["Drowsiness Score"] !== "N/A"); // Check if face was detected
+        
       } catch (error) {
         console.error("Error sending frame:", error);
       }
@@ -104,10 +120,11 @@ function Main() {
         playsInline 
         muted
       />
-      {!face && <div className="warning">No faces detected</div>}
-      {face && isDrowsy && <div className="alert">Drowsiness Detected! Please take a break!</div>}
-      {face && !isDrowsy && <div className="info">Webcam is active. Monitoring for drowsiness...</div>}
-      <div>Current EAR: {ear ? ear.toFixed(2) : 'N/A'}</div>
+      {!faceDetected && <div className="warning">No faces detected</div>}
+      {faceDetected && isDrowsy && <div className="alert">Drowsiness Detected! Please take a break!</div>}
+      {faceDetected && !isDrowsy && <div className="info">Webcam is active. Monitoring for drowsiness...</div>}
+      
+      <div>Current Drowsiness Score: {drowsinessScore !== null ? drowsinessScore.toFixed(2) : 'N/A'}</div>
     </div>
   );
 }
