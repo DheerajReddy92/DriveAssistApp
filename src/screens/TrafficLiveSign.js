@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import '../App.css';
 
-const API_URL = 'http://192.168.1.77:5001/api/classify_sign'; // Updated to match your traffic sign API endpoint
+const API_URL = 'https://0a01-35-230-113-221.ngrok-free.app/api/classify_sign'; // Updated to match your traffic sign API endpoint
 
 function TrafficLiveSign() {
   const videoRef = useRef(null);

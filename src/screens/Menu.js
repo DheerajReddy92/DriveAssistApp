@@ -93,7 +93,16 @@ function Menu() {
                         style={{ backgroundImage: `url(${d1})` }}
                         onClick={() => handleOptionClick(0)}
                     >
-                        {/* ... (content remains the same) ... */}
+                         <div className="shadow"></div>
+                        <div className="label">
+                            <div className="icon">
+                                <i className="fas fa-video"></i>
+                            </div>
+                            <div className="info">
+                                <div className="main">Drowsiness Detection</div>
+                                <div className="sub">Alert Driver by calculating ear</div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Traffic Signs Option */}
@@ -102,7 +111,16 @@ function Menu() {
                         style={{ backgroundImage: `url(${d2})` }}
                         onClick={() => handleOptionClick(1)}
                     >
-                        {/* ... (content remains the same) ... */}
+                         <div className="shadow"></div>
+                        <div className="label">
+                            <div className="icon">
+                                <i className="fas fa-video"></i>
+                            </div>
+                            <div className="info">
+                                <div className="main">Traffic Signs</div>
+                                <div className="sub">Find Traffic signs in a picture</div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Live Traffic Signs Option */}

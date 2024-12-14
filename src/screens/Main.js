@@ -1,16 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../App.css';
 
-const API_URL = 'http://127.0.0.1:5000/detect-drowsiness'; // Ensure this points to the correct endpoint
-const EAR_THRESHOLD = 0.60;  // Adjust this value as needed
+const API_URL = 'https://9a00-35-230-113-221.ngrok-free.app/detect-drowsiness';
+const EAR_THRESHOLD = 0.01;
 
 function Main() {
   const videoRef = useRef(null);
+  const audioRef = useRef(null);
   const [isDrowsy, setIsDrowsy] = useState(false);
   const [faceDetected, setFaceDetected] = useState(true);
   const [drowsinessScore, setDrowsinessScore] = useState(null);
-  const audioRef = useRef(new Audio(process.env.PUBLIC_URL + '/alarm.wav'));
   const streamRef = useRef(null);
+
+  useEffect(() => {
+    // Initialize audio with loop property
+    audioRef.current = new Audio(process.env.PUBLIC_URL + '/alarm.mp3');
+    audioRef.current.loop = true;
+
+    // Add event listener for window unload
+    const handleUnload = () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleUnload);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const startVideoStream = async () => {
@@ -19,7 +44,7 @@ function Main() {
         streamRef.current = stream;
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          await playVideo();
+          await videoRef.current.play();
         }
       } catch (err) {
         console.error("Error accessing webcam:", err);
@@ -32,43 +57,27 @@ function Main() {
     return () => {
       clearInterval(intervalId);
       if (streamRef.current) {
-        const tracks = streamRef.current.getTracks();
-        tracks.forEach(track => track.stop());
+        streamRef.current.getTracks().forEach(track => track.stop());
       }
     };
   }, []);
 
   useEffect(() => {
-    if (isDrowsy) {
-      playAudio();
-    } else {
-      stopAudio();
-    }
-  }, [isDrowsy]);
-
-  const playVideo = async () => {
-    if (videoRef.current) {
-      try {
-        await videoRef.current.play();
-        console.log("Video playback started");
-      } catch (err) {
-        console.error("Error starting video playback:", err);
+    const playAlarmLoop = async () => {
+      if (isDrowsy && audioRef.current) {
+        try {
+          await audioRef.current.play();
+        } catch (err) {
+          console.error("Error playing alarm:", err);
+        }
+      } else if (!isDrowsy && audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
       }
-    }
-  };
+    };
 
-  const playAudio = async () => {
-    try {
-      await audioRef.current.play();
-    } catch (err) {
-      console.error("Error playing audio:", err);
-    }
-  };
-
-  const stopAudio = () => {
-    audioRef.current.pause();
-    audioRef.current.currentTime = 0;
-  };
+    playAlarmLoop();
+  }, [isDrowsy]);
 
   const captureAndSendFrame = async () => {
     if (videoRef.current) {
@@ -79,9 +88,9 @@ function Main() {
       const frameData = canvas.toDataURL('image/jpeg');
 
       try {
-        const response = await fetch(API_URL, { // Use correct API URL
+        const response = await fetch(API_URL, {
           method: 'POST',
-          body: JSON.stringify({ image: frameData }), // Send as 'image'
+          body: JSON.stringify({ image: frameData }),
           headers: { 'Content-Type': 'application/json' },
         });
 
@@ -89,21 +98,16 @@ function Main() {
 
         const result = await response.json();
 
-        // Check for errors in the response
         if (result.error) {
           console.error(result.error);
           return;
         }
 
-        // Assuming the API returns {"Drowsiness Score": score}
-        const scoreValue =
-          result["Drowsiness Score"] === "N/A" ? null : result["Drowsiness Score"];
+        const scoreValue = result["Drowsiness Score"] === "N/A" ? null : result["Drowsiness Score"];
         
-        setDrowsinessScore(scoreValue); // Get the drowsiness score
-        
-        // Check against threshold only if scoreValue is a number
-        setIsDrowsy(typeof scoreValue === "number" && scoreValue < EAR_THRESHOLD); 
-        setFaceDetected(result["Drowsiness Score"] !== "N/A"); // Check if face was detected
+        setDrowsinessScore(scoreValue);
+        setIsDrowsy(typeof scoreValue === "number" && scoreValue < EAR_THRESHOLD);
+        setFaceDetected(result["Drowsiness Score"] !== "N/A");
         
       } catch (error) {
         console.error("Error sending frame:", error);
@@ -121,7 +125,12 @@ function Main() {
         muted
       />
       {!faceDetected && <div className="warning">No faces detected</div>}
-      {faceDetected && isDrowsy && <div className="alert">Drowsiness Detected! Please take a break!</div>}
+      {faceDetected && isDrowsy && (
+        <div className="alert">
+          Drowsiness Detected! Please take a break!
+          <div className="alarm-indicator">🚨 Alarm Active 🚨</div>
+        </div>
+      )}
       {faceDetected && !isDrowsy && <div className="info">Webcam is active. Monitoring for drowsiness...</div>}
       
       <div>Current Drowsiness Score: {drowsinessScore !== null ? drowsinessScore.toFixed(2) : 'N/A'}</div>

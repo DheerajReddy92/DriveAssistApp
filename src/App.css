@@ -274,8 +274,8 @@ body .options .option .label .info .sub {
 }
 
 .main-option {
-  width: 100%; /* Make it full width */
-  height: 40vh; /* Adjust height as needed */
+  /* width: 100%;  */
+  height: 20vh; 
   position: relative;
   background-color: white; /* Background color for visibility */
   border-radius: 10px; /* Rounded corners */

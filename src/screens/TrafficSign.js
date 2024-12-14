@@ -34,7 +34,7 @@ function TrafficSign() {
 
     setIsLoading(true);
     try {
-      const response = await fetch('http://192.168.1.77:5001/api/classify_sign', {
+      const response = await fetch('https://0a01-35-230-113-221.ngrok-free.app/api/classify_sign', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
